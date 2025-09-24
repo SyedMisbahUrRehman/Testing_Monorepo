@@ -7,7 +7,8 @@ COPY apps/frontend/package*.json ./
 RUN npm install
 COPY apps/frontend .
 EXPOSE 5173
-CMD ["npm", "run", "dev", "--workspace=@monorepo/frontend"]
+# run the frontend's local npm script (no workspace flag)
+CMD ["npm", "run", "dev"]
 
 # Production image: build static assets and serve with a lightweight server
 FROM node:20-alpine AS builder
@@ -16,7 +17,8 @@ COPY apps/frontend/package*.json ./
 # use npm install so build doesn't fail when package-lock.json is missing
 RUN npm install
 COPY apps/frontend .
-RUN npm run build --workspace=@monorepo/frontend
+# build using the package's local script
+RUN npm run build
 
 FROM nginx:stable-alpine AS prod
 COPY --from=builder /app/dist /usr/share/nginx/html
