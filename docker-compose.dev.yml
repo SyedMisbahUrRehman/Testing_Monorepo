@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  backend:
+    env_file:
+      - ./env.example
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      target: dev
+    volumes:
+      - ./apps/backend:/app:delegated
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=${BACKEND_PORT}
+
+  frontend:
+    env_file:
+      - ./env.example
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+      target: dev
+    volumes:
+      - ./apps/frontend:/app:delegated
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+      - PORT=${FRONTEND_PORT}
+
+

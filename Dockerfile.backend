@@ -1,0 +1,30 @@
+# Root backend Dockerfile
+# Development image: uses local node_modules via volume and runs nest in watch mode
+FROM node:20-alpine AS dev
+WORKDIR /app
+COPY apps/backend/package*.json ./
+COPY apps/backend/tsconfig*.json ./
+# use npm install so a missing package-lock.json won't fail the build
+RUN npm install --omit=dev
+COPY apps/backend .
+EXPOSE 3000
+CMD ["npm", "run", "dev", "--workspace=@monorepo/backend"]
+
+# Production image: build and run compiled Nest app
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY apps/backend/package*.json ./
+# use npm install to avoid failing when lockfile is missing
+RUN npm install
+COPY apps/backend .
+RUN npm run build --workspace=@monorepo/backend
+
+FROM node:20-alpine AS prod
+WORKDIR /app
+COPY --from=builder /app/apps/backend/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/apps/backend/dist ./dist
+EXPOSE 3000
+CMD ["npm", "run", "start:prod", "--workspace=@monorepo/backend"]
+
+
