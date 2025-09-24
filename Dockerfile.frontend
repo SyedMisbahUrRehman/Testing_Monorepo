@@ -3,7 +3,8 @@
 FROM node:20-alpine AS dev
 WORKDIR /app
 COPY apps/frontend/package*.json ./
-RUN npm ci
+# use npm install so build doesn't fail when package-lock.json is missing
+RUN npm install
 COPY apps/frontend .
 EXPOSE 5173
 CMD ["npm", "run", "dev", "--workspace=@monorepo/frontend"]
@@ -12,7 +13,8 @@ CMD ["npm", "run", "dev", "--workspace=@monorepo/frontend"]
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY apps/frontend/package*.json ./
-RUN npm ci
+# use npm install so build doesn't fail when package-lock.json is missing
+RUN npm install
 COPY apps/frontend .
 RUN npm run build --workspace=@monorepo/frontend
 

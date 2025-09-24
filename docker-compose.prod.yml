@@ -2,7 +2,7 @@ version: "3.8"
 services:
   backend:
     env_file:
-      - ./env.prod.example
+      - ./.env
     build:
       context: .
       dockerfile: Dockerfile.backend
@@ -15,7 +15,7 @@ services:
 
   frontend:
     env_file:
-      - ./env.prod.example
+      - ./.env
     build:
       context: .
       dockerfile: Dockerfile.frontend
