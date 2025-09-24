@@ -1,0 +1,27 @@
+{
+  "name": "@monorepo/frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "start": "vite preview",
+    "lint": "echo 'No linting configured'",
+    "lint:fix": "echo 'No linting configured'",
+    "test": "echo 'No tests configured'",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "vue": "^3.5.21"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/tsconfig": "^0.8.1",
+    "rimraf": "^5.0.5",
+    "typescript": "~5.8.3",
+    "vite": "^7.1.7",
+    "vue-tsc": "^3.0.7"
+  }
+}
