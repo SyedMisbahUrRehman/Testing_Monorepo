@@ -5,8 +5,8 @@ services:
       - ./.env
     build:
       context: .
-      dockerfile: Dockerfile.backend
-      target: prod
+      dockerfile: Dockerfile
+      target: backend-prod
     ports:
       - "3000:3000"
     environment:
@@ -18,8 +18,8 @@ services:
       - ./.env
     build:
       context: .
-      dockerfile: Dockerfile.frontend
-      target: prod
+      dockerfile: Dockerfile
+      target: frontend-prod
     ports:
       - "80:80"
     environment:

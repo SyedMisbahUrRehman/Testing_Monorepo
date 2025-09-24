@@ -5,11 +5,11 @@ services:
       - ./.env
     build:
       context: .
-      dockerfile: Dockerfile.backend
-      target: dev
+      dockerfile: Dockerfile
+      target: backend-dev
     volumes:
-      - ./apps/backend:/app:delegated
-      - /app/node_modules
+      - ./apps/backend:/app/backend:delegated
+      - /app/backend/node_modules
     ports:
       - "3000:3000"
     environment:
@@ -21,11 +21,11 @@ services:
       - ./.env
     build:
       context: .
-      dockerfile: Dockerfile.frontend
-      target: dev
+      dockerfile: Dockerfile
+      target: frontend-dev
     volumes:
-      - ./apps/frontend:/app:delegated
-      - /app/node_modules
+      - ./apps/frontend:/app/frontend:delegated
+      - /app/frontend/node_modules
     ports:
       - "5173:5173"
     environment:
