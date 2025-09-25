@@ -5,8 +5,8 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '../../', '')
   
-  console.log('Frontend environment variables:')
-  console.log('FRONTEND_PORT:', env.FRONTEND_PORT)
+  // Avoid using `console` in this config to prevent TypeScript errors in node build
+  // (If you need logging during dev, enable it conditionally or use a logger.)
   
   return {
     plugins: [vue()],

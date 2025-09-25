@@ -3,7 +3,14 @@ import { ref, onMounted } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 
 const backendStatus = ref('')
-const users = ref([])
+type User = {
+  id: string | number
+  name: string
+  email: string
+}
+
+// Use a more explicit ref type so template `v-for` infers correctly
+const users = ref<Array<User>>([])
 const loading = ref(false)
 
 const fetchBackendData = async () => {
