@@ -16,8 +16,16 @@ const loading = ref(false)
 const fetchBackendData = async () => {
   loading.value = true
   try {
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL
-    
+    // Provide a safe fallback and validate the environment variable so the
+    // frontend doesn't request `undefined` when the deploy env is misconfigured.
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || ''
+
+    if (!apiBaseUrl) {
+      console.error('VITE_API_BASE_URL is not set. Skipping backend requests.')
+      backendStatus.value = 'API base URL not configured'
+      return
+    }
+
     // Test backend health
     const healthResponse = await fetch(`${apiBaseUrl}/api/health`)
     const healthData = await healthResponse.json()
