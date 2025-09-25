@@ -61,7 +61,7 @@ COPY --from=frontend-build /app/frontend/dist /usr/share/nginx/html
 
 # Copy built backend
 COPY --from=backend-build /app/backend/dist /app/backend/dist
-COPY --from=backend-build /app/node_modules /app/node_modules
+COPY --from=backend-build /app/backend/node_modules /app/node_modules
 COPY --from=backend-build /app/backend/package*.json /app/backend/
 
 # Copy nginx config
