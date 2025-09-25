@@ -50,6 +50,28 @@ RUN npm run build
 FROM nginx:stable-alpine AS frontend-prod
 COPY --from=frontend-build /app/frontend/dist /usr/share/nginx/html
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+COPY ./docker/nginx.conf /etc/nginx/conf.d/default.conf
+
+### Combined prod image: serve frontend via nginx and proxy /api to backend
+FROM node:20-alpine AS prod
+WORKDIR /app
+
+# Copy built frontend assets
+COPY --from=frontend-build /app/frontend/dist /usr/share/nginx/html
+
+# Copy built backend
+COPY --from=backend-build /app/backend/dist /app/backend/dist
+COPY --from=backend-build /app/backend/node_modules /app/node_modules
+COPY --from=backend-build /app/backend/package*.json /app/backend/
+
+# Copy nginx config
+COPY --from=frontend-prod /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+
+# Add a small start script to run backend and nginx together
+COPY docker/start-prod.sh /usr/local/bin/start-prod.sh
+RUN chmod +x /usr/local/bin/start-prod.sh
+
+EXPOSE 80 3000
+CMD ["/usr/local/bin/start-prod.sh"]
 
 
